@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mercado Do Salão Branco</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Spectral:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Spectral', serif;
+            background-color: #001f3f; /* Azul Marinho */
+            color: #ffffff;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        .container {
+            width: 50%;
+            margin: 20px auto;
+            padding: 25px;
+            background: #001a33; /* Azul mais escuro */
+            border-radius: 12px;
+            box-shadow: 0px 6px 12px rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 12px 0;
+            border: 2px solid #ffffff;
+            border-radius: 8px;
+            background: #003366;
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(to right, #004080, #0056b3);
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        button:hover {
+            background: linear-gradient(to right, #0056b3, #004080);
+            transform: scale(1.07);
+        }
+
+        .produto {
+            text-align: left;
+            margin-top: 20px;
+            padding: 18px;
+            background: #000f1a;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            color: #ffffff;
+            box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.2);
+        }
+
+        .produto img {
+            width: 90px;
+            height: 90px;
+            border-radius: 12px;
+            margin-right: 20px;
+            border: 3px solid #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <h2>Mercado Do Salão Branco</h2>
+    <div class="container">
+        <input type="text" id="nome" placeholder="Nome do Produto">
+        <input type="text" id="valor" placeholder="Valor por Quantidade" oninput="formatarValor(this)">
+        <input type="text" id="codigo" placeholder="Código do Produto (ex: P123)">
+        <input type="text" id="imagem" placeholder="URL da Imagem">
+        <button onclick="salvarProduto()">Salvar Produto</button>
+    </div>
+
+    <div id="listaProdutos"></div>
+
+    <script>
+        function formatarValor(campo) {
+            let valor = campo.value.replace(/\D/g, ""); // Remove tudo que não for número
+            if (valor) {
+                valor = (parseFloat(valor) / 100).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+                campo.value = valor;
+            }
+        }
+
+        function salvarProduto() {
+            let nome = document.getElementById("nome").value;
+            let valor = document.getElementById("valor").value;
+            let codigo = document.getElementById("codigo").value;
+            let imagem = document.getElementById("imagem").value.trim();
+            
+            if (!imagem) {
+                imagem = "https://via.placeholder.com/90"; // Imagem padrão caso esteja vazio
+            }
+
+            if (nome && valor && codigo) {
+                let produtoDiv = document.createElement("div");
+                produtoDiv.classList.add("produto");
+                produtoDiv.innerHTML = `
+                    <img src="${imagem}" alt="Imagem do Produto">
+                    <div>
+                        <strong>Nome:</strong> ${nome} <br>
+                        <strong>Valor:</strong> R$ ${valor} <br>
+                        <strong>Código:</strong> ${codigo}
+                    </div>
+                `;
+
+                document.getElementById("listaProdutos").appendChild(produtoDiv);
+                document.getElementById("nome").value = "";
+                document.getElementById("valor").value = "";
+                document.getElementById("codigo").value = "";
+                document.getElementById("imagem").value = "";
+            } else {
+                alert("Por favor, preencha todos os campos!");
+            }
+        }
+    </script>
+</body>
+</html>
